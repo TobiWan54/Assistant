@@ -210,6 +210,8 @@ class AssistantSession:
         # Track tool calls we have already emitted this turn
         emitted_tool_call_signatures: set[str] = set()
 
+        tool_call_assistant_message: dict[str, Any] | None = None
+
         # For display
         final_visible_text = ""
 
@@ -250,6 +252,7 @@ class AssistantSession:
                     # immediately, even if the streamed arguments are still incomplete.
                     if tool_calls or function_call:
                         had_tool_call = True
+                        tool_call_assistant_message = msg
 
                     # Some backends stream OpenAI-style tool_calls as a list
                     if tool_calls and isinstance(tool_calls, list):
@@ -312,8 +315,9 @@ class AssistantSession:
 
         # Build compact finalised history messages
         finalized_messages: list[dict[str, Any]] = []
+        if tool_call_assistant_message is not None:
+            finalized_messages.append(tool_call_assistant_message)
         finalized_messages.extend(tool_messages)
-
         if final_assistant_message is not None and final_visible_text.strip():
             finalized_messages.append(final_assistant_message)
 
