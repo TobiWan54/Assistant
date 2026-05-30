@@ -27,47 +27,19 @@ class CLIEventSink(BaseEventSink):
 
     def on_event(self, event: AgentEvent) -> None:
         if event.type == "user_text":
-            # New user turn -> reset assistant rendering state
             self._reset_turn()
             return
 
         elif event.type == "assistant_text":
+            # Just buffer the latest full text, don't print yet
             full_text = event.payload.get("text", "")
-            if not full_text:
-                return
-
-            # Ignore whitespace-only chunks so we don't print empty "Assistant:" lines
-            if not full_text.strip():
-                return
-
-            # Only print the delta compared with what we've already displayed
-            if full_text.startswith(self._assistant_printed_text):
-                delta = full_text[len(self._assistant_printed_text):]
-            else:
-                # Fallback: if stream shape changes unexpectedly, print full text
-                delta = full_text
-
-            # Ignore whitespace-only deltas as well
-            if not delta or not delta.strip():
+            if full_text.strip():
                 self._assistant_printed_text = full_text
-                return
-
-            # Trim leading whitespace on the first visible assistant chunk
-            if not self._started_assistant_line:
-                delta = delta.lstrip()
-
-            # If trimming removed everything, don't open an empty assistant line
-            if not delta:
-                self._assistant_printed_text = full_text
-                return
-
-            self._ensure_assistant_prefix()
-            print(delta, end="", flush=True)
-            self._assistant_printed_text = full_text
 
         elif event.type == "assistant_text_complete":
-            if self._started_assistant_line:
-                print()
+            text = self._assistant_printed_text.strip()
+            if text:
+                print(f"Assistant: {text}")
             self._reset_turn()
 
         elif event.type == "tool_call" and self.show_tools:

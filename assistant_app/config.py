@@ -18,5 +18,6 @@ LLM_CFG = {
         "top_p": float(os.getenv("MODEL_TOP_P", "1.0")),
         "temperature": float(os.getenv("MODEL_TEMPERATURE", "0.2")),
         "max_input_tokens": int(os.getenv("MODEL_MAX_INPUT_TOKENS", "4800")),
+        "max_tokens": int(os.getenv("MODEL_MAX_TOKENS", "512"))
     },
 }

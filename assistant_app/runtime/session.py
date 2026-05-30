@@ -173,24 +173,20 @@ class AssistantSession:
     # -----------------------------------------
 
     def emit_tool_call_if_new(
-        self,
-        function_call: dict[str, Any],
-        emitted_signatures: set[str],
+            self,
+            function_call: dict[str, Any],
+            emitted_signatures: set[str],
     ) -> bool:
-        """
-        Emit a tool_call event only if:
-        - the tool call is complete/stable
-        - we have not already emitted the exact same call this turn
-        """
         normalised = normalise_tool_call(function_call)
         if normalised is None:
             return False
 
-        sig = json.dumps(normalised, sort_keys=True, ensure_ascii=False)
-        if sig in emitted_signatures:
+        # Deduplicate by name only — empty-args emissions are streaming artefacts
+        name_sig = normalised["name"]
+        if name_sig in emitted_signatures:
             return False
 
-        emitted_signatures.add(sig)
+        emitted_signatures.add(name_sig)
 
         if self.config.emit_tool_events:
             self.emit("tool_call", function_call=normalised, raw=function_call)
