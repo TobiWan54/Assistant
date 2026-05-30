@@ -15,7 +15,7 @@ _Disclaimer: contains a significant proportion of AI-generated code._
 
 - Python 3.11+
 - Node.js 18+
-- A locally running OpenAI-compatible model server (e.g. vLLM or Ollama) serving a Qwen3 model
+- A locally running OpenAI-compatible model server (e.g. vLLM or Ollama) serving a Qwen3.5 model
 - Spotify Premium account (for Spotify integration)
 - Google Cloud project with Calendar API enabled (for calendar integration)
 
@@ -36,6 +36,14 @@ cd spotify-mcp-server && npm install && npm run build && cd ..
 Copy `secrets.py.example` to `secrets.py` and fill in your credentials.
 
 ## Usage
+
+Ensure model server is using the _chatml_ chat template. Example llama-sever command:
+
+```
+llama-server.exe -hf unsloth/Qwen3.5-2B-GGUF:Q4_K_M -c 8192 --fit on --port 8000 --host 0.0.0.0 --chat-template chatml
+```
+
+Then run the cli (for testing).
 
 ```bash
 python -m assistant_app.ui.cli
