@@ -1,0 +1,9 @@
+{
+  "name": "bedside-assistant-mcp",
+  "version": "1.0.0",
+  "description": "MCP server dependencies for the Bedside Assistant",
+  "private": true,
+  "dependencies": {
+    "mcp-google-calendar": "latest"
+  }
+}

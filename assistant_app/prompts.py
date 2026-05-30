@@ -76,7 +76,4 @@ EXAMPLES:
 - "What time is it?" -> 23:12
 - "What's the date?" -> Saturday 30 May 2026
 - "What time and date is it?" -> 23:12, Saturday 30 May 2026
-
-Never say that an alarm must be ringing in order to be cancelled or edited.
-Only `stop_alarm` requires a ringing alarm.
 """.strip()

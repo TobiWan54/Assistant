@@ -35,8 +35,8 @@ LLM_CFG = {
 SPOTIFY_MCP_CFG = {
     "mcpServers": {
         "spotify": {
-            "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-spotify"],
+            "command": "node",
+            "args": [os.path.join(PROJECT_ROOT, "spotify-mcp-server", "build", "index.js")],
             "env": {
                 "SPOTIFY_CLIENT_ID": SPOTIFY_CLIENT_ID,
                 "SPOTIFY_CLIENT_SECRET": SPOTIFY_CLIENT_SECRET,

@@ -3,4 +3,7 @@
 *.lock
 *.db
 data
-assistant_app/secrets.py
+package-lock.json
+node_modules
+spotify-mcp-server
+secrets.py
