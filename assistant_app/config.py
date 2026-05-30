@@ -1,15 +1,22 @@
 import os
-from .secrets import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI
+from pathlib import Path
+from .secrets import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 from zoneinfo import ZoneInfo
 
+## Core variables
 
-# Core variables
 TZ = ZoneInfo(os.getenv("TZ", "Europe/London"))
-ALARMS_DB_PATH = os.getenv("ALARMS_DB_PATH", "alarms.db")
 
-# Secrets
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+CONFIG_DIR = PROJECT_ROOT / "config"
+DATA_DIR = PROJECT_ROOT / "data"
 
-# Qwen-Agent Config
+# Create runtime data folder if it doesn't exist
+DATA_DIR.mkdir(exist_ok=True)
+
+ALARMS_DB_PATH = os.getenv("ALARMS_DB_PATH", str(DATA_DIR / "alarms.db"))
+
+## Qwen-Agent Config
 LLM_CFG = {
     "model": os.getenv("MODEL_NAME", "Qwen/Qwen3.5-2B"),
     "model_type": "qwenvl_oai",
@@ -24,7 +31,7 @@ LLM_CFG = {
     },
 }
 
-# Spotify MCP Config
+## Spotify MCP Config
 SPOTIFY_MCP_CFG = {
     "mcpServers": {
         "spotify": {
@@ -33,7 +40,27 @@ SPOTIFY_MCP_CFG = {
             "env": {
                 "SPOTIFY_CLIENT_ID": SPOTIFY_CLIENT_ID,
                 "SPOTIFY_CLIENT_SECRET": SPOTIFY_CLIENT_SECRET,
-                "SPOTIFY_REDIRECT_URI": SPOTIFY_REDIRECT_URI,
+                "SPOTIFY_REDIRECT_URI": "http://127.0.0.1:8888/callback"
+            }
+        }
+    }
+}
+
+# Google Calendar MCP config
+CAL_MCP_CFG = {
+    "mcpServers": {
+        "google-calendar": {
+            "command": "npx",
+            "args": ["-y", "@google-labs/mcp-calendar"],
+            "env": {
+                "GOOGLE_CREDENTIALS_PATH": os.getenv(
+                    "GOOGLE_CREDENTIALS_PATH",
+                    str(DATA_DIR / "google_credentials.json"),
+                ),
+                "GOOGLE_TOKEN_PATH": os.getenv(
+                    "GOOGLE_TOKEN_PATH",
+                    str(DATA_DIR / "google_token.json"),
+                ),
             }
         }
     }

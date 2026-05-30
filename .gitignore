@@ -2,4 +2,5 @@
 .idea
 *.lock
 *.db
+data
 assistant_app/secrets.py
