@@ -2,7 +2,7 @@
 
 from qwen_agent.agents import Assistant
 
-from .config import LLM_CFG, TZ, ALARMS_DB_PATH
+from .config import LLM_CFG, SPOTIFY_MCP_CFG, TZ, ALARMS_DB_PATH
 from .prompts import SYSTEM_MESSAGE
 
 from assistant_app.domains.alarms.store import AlarmStore
@@ -47,8 +47,7 @@ def build_agent() -> tuple[Assistant, AssistantRuntime]:
         "find_alarms"
     ]
 
-    # In future this list will have MCP configs, e.g. Spotify, appended.
-    function_list = local_tools
+    function_list = local_tools + [SPOTIFY_MCP_CFG]
 
     bot = Assistant(
         llm=LLM_CFG,
@@ -57,7 +56,5 @@ def build_agent() -> tuple[Assistant, AssistantRuntime]:
         name="Bedside Assistant",
         description="A Qwen-Agent assistant with local alarm tools and MCP integration."
     )
-
-    print(LLM_CFG)
 
     return bot, runtime

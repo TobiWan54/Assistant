@@ -1,5 +1,7 @@
 import os
+from .secrets import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI
 from zoneinfo import ZoneInfo
+
 
 # Core variables
 TZ = ZoneInfo(os.getenv("TZ", "Europe/London"))
@@ -20,4 +22,19 @@ LLM_CFG = {
         "max_input_tokens": int(os.getenv("MODEL_MAX_INPUT_TOKENS", "4800")),
         "max_tokens": int(os.getenv("MODEL_MAX_TOKENS", "512"))
     },
+}
+
+# Spotify MCP Config
+SPOTIFY_MCP_CFG = {
+    "mcpServers": {
+        "spotify": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-spotify"],
+            "env": {
+                "SPOTIFY_CLIENT_ID": SPOTIFY_CLIENT_ID,
+                "SPOTIFY_CLIENT_SECRET": SPOTIFY_CLIENT_SECRET,
+                "SPOTIFY_REDIRECT_URI": SPOTIFY_REDIRECT_URI,
+            }
+        }
+    }
 }
