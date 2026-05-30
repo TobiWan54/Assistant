@@ -3,7 +3,8 @@
 A local voice-friendly assistant for the Raspberry Pi, built with [Qwen-Agent](https://github.com/QwenLM/Qwen-Agent) and a locally-hosted Qwen3 model.
 
 ## Features
-- [x] Time and Date
+- [ ] Voice input and output
+- [x] Time and date
 - [x] Alarms - set, fetch, edit, cancel
 - [ ] Spotify playback control (via [marcelmarais/spotify-mcp-server](https://github.com/marcelmarais/spotify-mcp-server))
 - [ ] Google Calendar reminders (via `mcp-google-calendar`)
